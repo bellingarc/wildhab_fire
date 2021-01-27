@@ -1,10 +1,11 @@
 const admin = require("firebase-admin")
-const serviceAccount = require("../../wildhabitatexercise-firebase-adminsdk-z62ei-2dc0db54fd.json")
+const serviceAccount = require("../../credentials.json")
 
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-})
+if(!admin.apps.length){
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    })
+    }
 const firestore = admin.firestore()
 const eventsRef = firestore.collection('events')
 exports.postEvent = (req, res) => {
@@ -13,8 +14,24 @@ exports.postEvent = (req, res) => {
             credential: admin.credential.cert(serviceAccount)
         })
     }
-
-
+    if (Object.keys(req.body).length ===0 || req.body === undefined){
+        res.send({
+            message: "no event defined"
+        })
+        return
+    }
+    if (req.body.name === null){
+        res.send({
+            message: 'Event name required'
+        })
+        return
+    }
+    if (typeof req.body.name !== 'string'){
+        res.send({
+            message: 'invalid event name'
+    })
+        return
+}
     let newEvent = req.body
     let now = admin.firestore.FieldValue.serverTimestamp()
     newEvent.updated = now
