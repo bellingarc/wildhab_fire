@@ -96,6 +96,9 @@ exports.updateEvent = (req, res) => {
   }
   eventsRef.doc(req.params.eventId).update(req.body)
   .then(() => {
+    let now = admin.firestore.FieldValue.serverTimestamp()
+    let event = req.body
+    event.updated_on = now
     res.status(200).json({
       status: 'success',
       message: 'Event updated successfully',

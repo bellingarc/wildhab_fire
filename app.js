@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const { getEvents, postEvent } = require('./src/events')
 const { getPeople, postPerson } = require('./src/users')
 const { getSingleEvent, deleteEvent, updateEvent } = require('./src/events/eventId')
-const { getSinglePerson } = require('./src/users/userId')
+const { getSinglePerson, deletePerson, updatePerson } = require('./src/users/userId')
 
 const app = express()
 app.use(bodyParser.json())
@@ -21,6 +21,8 @@ app.patch('/events/:eventId', updateEvent)
 app.get('/people', getPeople)
 app.get('/people/:personId', getSinglePerson)
 app.post('/people',postPerson)
+app.delete('/people/:personId', deletePerson)
+app.patch('/people/:personId', updatePerson)
 
 
 app.listen(port,() => {

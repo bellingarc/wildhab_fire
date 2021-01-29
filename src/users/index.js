@@ -20,18 +20,19 @@ exports.postPerson = (req, res) => {
             message: "no person defined"
         })
         return
-    }
-    if (req.body.name === null){
+      }
+      if (req.body.first_name === null || req.body.last_name === null){
         res.send({
             message: 'Person name required'
         })
-    }
-    if (typeof req.body.name !== 'string'){
+        return
+      }
+      if (typeof req.body.first_name !== 'string' || typeof req.body.last_name !== 'string'){
         res.send({
             message: 'invalid person name'
         })
         return
-    }
+      }
 
     let newPerson = req.body
     let now = admin.firestore.FieldValue.serverTimestamp()
